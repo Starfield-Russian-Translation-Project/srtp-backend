@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "esnext",
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["node"],  
+    "strict": true,
+    "sourceMap": true,
+    "paths": {
+      "@app": ["src/app"],
+      "@api": ["src/api/v1"],
+    },
+  },
+  "include": ["./src/**/*"]
+}
