@@ -1,13 +1,17 @@
 import {Request, Response} from 'express';
 import { TranslationString } from './string.types';
-import { db } from '@app';
-import { Db } from 'mongodb';
+import { MongoClient } from 'mongodb';
+import { client } from '@app';
 
 class StringController {
-  private collection;
+  private client;
 
-  constructor(db: Db) {
-    this.collection = db.collection<TranslationString>('strings');
+  constructor(client: MongoClient) {
+    this.client = client;
+  }
+
+  private get collection() {
+    return this.client.db().collection<TranslationString>('strings');
   }
 
   private validateString(str: Partial<TranslationString>): boolean {
@@ -74,4 +78,4 @@ class StringController {
   }
 }
 
-export const stringController = new StringController(db);
+export const stringController = new StringController(client);

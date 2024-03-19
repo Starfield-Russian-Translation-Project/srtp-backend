@@ -1,16 +1,20 @@
 import { Request, Response } from "express";
 import { AuthLoginRequest, User } from "./auth.types";
-import { db } from "@app";
-import { Db } from "mongodb";
+import { MongoClient } from "mongodb";
 import { hashSync, compareSync } from 'bcryptjs';
 import { READ_GLOSSARY, READ_NPC, READ_STRINGS } from "src/utils/permissions";
 import { sign } from 'jsonwebtoken';
+import { client } from "@app";
 
 class AuthController {
-  private collection;
+  private client;
 
-  constructor(db: Db) {
-    this.collection = db.collection<User>('users');
+  constructor(client: MongoClient) {
+    this.client = client;
+  }
+
+  private get collection() {
+    return this.client.db().collection<User>('users');
   }
 
   private generateJwt (username: string, permissions: number) {
@@ -83,7 +87,7 @@ class AuthController {
     try {
       const users = await this.collection.find().toArray();
       
-      return response.status(200).json(users);
+      return response.status(200).json(users ?? []);
     } catch(error) {
       console.log(error);
 
@@ -92,4 +96,4 @@ class AuthController {
   }
 }
 
-export const authController = new AuthController(db);
+export const authController = new AuthController(client);

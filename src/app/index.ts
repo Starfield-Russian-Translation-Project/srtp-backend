@@ -3,8 +3,7 @@ import { v1 } from '@api';
 import { MongoClient } from 'mongodb';
 
 const app = express();
-const client = new MongoClient(process.env.DB_CONFIG);
-export const db = client.db(process.env.DB_NAME);
+export const client = new MongoClient(process.env.DB_CONFIG);
 
 app.use(express.json());
 app.use('/api/v1', v1);
