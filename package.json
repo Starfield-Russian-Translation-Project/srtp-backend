@@ -10,9 +10,7 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.11.28",
-    "nodemon": "^3.1.0",
-    "rollup": "^4.13.0",
-    "ts-node": "^10.9.2",
+    "tsup": "^8.0.2",
     "typescript": "^5.4.2"
   },
   "dependencies": {
@@ -22,11 +20,11 @@
     "mongodb": "^6.5.0"
   },
   "engines": {
-    "node": ">= 18.18.0"
+    "node": ">= 20.10.0"
   },
   "scripts": {
-    "build": "tsc && rollup ./src/index.ts --file ./dist/index.js",
-    "serve": "nodemon ./src/index.ts"
+    "build": "tsup ./src/",
+    "dev": "cp .env.* ./dist/ && tsup ./src/ --watch --onSuccess 'node --env-file .env.development dist/index.js'"
   },
   "packageManager": "yarn@3.6.4"
 }
