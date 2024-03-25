@@ -1,5 +1,6 @@
 {
   "name": "srtp-backend",
+  "type": "module",
   "version": "0.0.1",
   "main": "dist/index.js",
   "repository": "https://github.com/Starfield-Russian-Translation-Project/srtp-backend.git",
@@ -24,7 +25,7 @@
   },
   "scripts": {
     "build": "tsup ./src/",
-    "dev": "cp .env.* ./dist/ && tsup ./src/ --watch --onSuccess 'node --env-file .env.development dist/index.js'"
+    "dev": "rm -r ./dist/* && cp .env.* ./dist/ && tsup ./src/ --sourcemap --watch --onSuccess 'node --env-file .env.development dist/index.cjs'"
   },
   "packageManager": "yarn@3.6.4"
 }

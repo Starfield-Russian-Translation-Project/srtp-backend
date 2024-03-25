@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "target": "esnext",
     "baseUrl": ".",
     "rootDir": "./src",
