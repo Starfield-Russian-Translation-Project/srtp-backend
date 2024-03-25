@@ -1,30 +1,32 @@
 import {Request, Response} from 'express';
 import { TranslationString } from './string.types';
-import { MongoClient } from 'mongodb';
 import { client } from '@app';
 
 class StringController {
-  private client;
-
-  constructor(client: MongoClient) {
-    this.client = client;
+  constructor() {
+    this.createOne = this.createOne.bind(this);
+    this.createMany = this.createMany.bind(this);
+    this.getOne = this.getOne.bind(this);
+    this.getMany = this.getMany.bind(this);
+    this.deleteOne = this.deleteOne.bind(this);
+    this.deleteMany = this.deleteMany.bind(this);
   }
 
-  private get collection() {
-    return this.client.db().collection<TranslationString>('strings');
+  get #collection() {
+    return client.db().collection<TranslationString>('strings');
   }
 
-  private validateString(str: Partial<TranslationString>): boolean {
+  #validateString(str: Partial<TranslationString>): boolean {
     return !!str?.edid || !!str?.stringId || !!str?.source;
   }
 
   async createOne(request: Request<never, TranslationString>, response: Response) {
     try {
-      if (!this.validateString(request.body)) {
+      if (!this.#validateString(request.body)) {
         return response.status(400).send('Incorrect string data format');
       }
 
-      const duplicateString = await this.collection.findOne({
+      const duplicateString = await this.#collection.findOne({
         edid: request.body.edid, 
         stringId: request.body.stringId
       });
@@ -33,7 +35,7 @@ class StringController {
         return response.status(400).send('String is already exist.');
       }
 
-      const dbElement = await this.collection.insertOne(request.body);
+      const dbElement = await this.#collection.insertOne(request.body);
 
       return response.status(200).send(dbElement.insertedId);
     } catch(error) {
@@ -49,7 +51,7 @@ class StringController {
 
   async getOne(request: Request<never, never, never, {id: string}>, response: Response) {
     try {
-      const requiredString = await this.collection.findOne({id: request.query.id});
+      const requiredString = await this.#collection.findOne({id: request.query.id});
 
       return response.status(200).json(requiredString);
     } catch(error) {
@@ -78,4 +80,4 @@ class StringController {
   }
 }
 
-export const stringController = new StringController(client);
+export const stringController = new StringController();

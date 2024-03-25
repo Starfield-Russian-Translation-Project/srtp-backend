@@ -1,3 +1,5 @@
+"use strict";
+
 import express from 'express';
 import { v1 } from '@api';
 import { MongoClient } from 'mongodb';
@@ -10,9 +12,11 @@ app.use('/api/v1', v1);
 
 export const run = async () => {
   try {
-    await client.connect();
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT, async () => {
       console.log(`Start listening ${process.env.PORT} port.`);
+
+      await client.connect();
+      await client.db(process.env.DB_NAME);
     });
   } catch(error) {
     console.log(error);
