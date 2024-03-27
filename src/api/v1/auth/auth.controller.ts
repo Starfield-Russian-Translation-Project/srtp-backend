@@ -63,7 +63,7 @@ class AuthController {
         return response.status(400).json({message: "Password or username have incorrect length."});
       }
 
-      const isUsernameExist = !!this.#collection.findOne({username});
+      const isUsernameExist = !!(await this.#collection.findOne({username}));
 
       if (isUsernameExist) {
         return response.status(400).json({message: "Username already exist."})
