@@ -25,7 +25,7 @@
   },
   "scripts": {
     "build": "tsup ./src/",
-    "dev": "rm -r ./dist/* && cp .env.* ./dist/ && tsup ./src/ --sourcemap --watch --onSuccess 'node --env-file .env.development dist/index.cjs'"
+    "dev": "rm -rf ./dist && mkdir dist && cp .env.* ./dist/ && tsup ./src/ --sourcemap --watch --onSuccess 'node --enable-source-maps --env-file .env.development dist/index.cjs'"
   },
   "packageManager": "yarn@3.6.4"
 }
